@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="UTF-8">
+    <title>List of the registered users.</title>
+  </head>
+  <body>
+    <ol>
+      <% users.forEach((user) => { %>
+        <li><%= user.name %></li>
+      <% }); %>
+    </ol>
+    <a href="/addUser"><button>Add User</button></a>
+
+    <!-- scripts -->
+    <script src="/js/users.js"></script>
+    <script>
+      document.getElementById("addUserButton").formAction = "/addUser";
+    </script>
+  </body>
+
+</html>
