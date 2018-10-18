@@ -1,5 +1,6 @@
 const express = require('express');
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
+const morgan = require('morgan');
 const http = require('http');
 const path = require('path');
 const ejs = require('ejs');
@@ -15,7 +16,9 @@ const server = http.createServer(app);
 
 
 app.set('view engine', 'ejs');
-app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(morgan('common'));
+
 /**
 start-Testing_____________________________________
 **/
@@ -27,7 +30,9 @@ end-Testing_______________________________________
 
 
 
-
+app.get('/', (req, res) => {
+res.redirect('/users');
+});
 
 //statics middleware
 // app.use(express.static(publicPath));
@@ -40,12 +45,28 @@ app.get('/users', (req, res) => {
 });
 
 //users-----------------------------------------
-app.post('/addUser', (req, res) => {
-
+app.get('/addUser', (req, res) => {
+  res.render('pages/addUser.ejs');
 });
 
 
-
+//create user --------------------------------------------
+app.post('/user_create', (req, res) => {
+  // console.log(req.body);
+  var pollUser = new PollUser({
+    name: req.body.addUser_form_name,
+    uname: req.body.addUser_form_uname,
+    password: req.body.addUser_form_pass,
+    type: req.body.addUser_form_type
+  });
+  pollUser.save()
+  .then((createdUser) => {
+    res.send(createdUser);
+  })
+  .catch((e) => {
+    res.send(e);
+  });
+});
 
 
 
